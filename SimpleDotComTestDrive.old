@@ -1,0 +1,87 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class SimpleDotComTestDrive {
+
+    public static void main(String[] args) {
+        //ejecutar con varios números {1..7} como argumentos para ver si acierta o no
+        SimpleDotCom testObject = new SimpleDotCom();
+        int[] locations = getRndNumber(9, 3);
+        /*
+         * To print color in terminal, "\033[x;xxm" where x;xx is the ANSI escape code:
+         * Black        0;30     Dark Gray     1;30
+         * Red          0;31     Light Red     1;31
+         * Green        0;32     Light Green   1;32
+         * Brown/Orange 0;33     Yellow        1;33
+         * Blue         0;34     Light Blue    1;34
+         * Purple       0;35     Light Purple  1;35
+         * Cyan         0;36     Light Cyan    1;36
+         * Light Gray   0;37     White         1;37
+         * https://en.wikipedia.org/wiki/ANSI_escape_code
+         */
+        final String RED = "\033[0;31m";
+        final String BLUE = "\033[0;34m";
+        final String YELLOW = "\033[0;33m";
+        final String GREEN = "\033[0;32m";
+        final String NC = "\033[0m";
+
+        testObject.setLocationCells(locations);
+
+        //String guess = "2";
+        System.out.println("La ubicación es: " + Arrays.toString(locations));
+        String testResult;
+        String result;
+        int count = 0;
+        String strLocations = Arrays.toString(locations);
+        for (String arg : args) {
+            testResult = testObject.checkYourself(arg);
+            switch (testResult) {
+                case "hit":
+                    System.out.println(arg + " es " + BLUE + testResult + NC);
+                    break;
+                case "miss":
+                    System.out.println(arg + " es " + YELLOW + testResult + NC);
+                    break;
+                case "kill":
+                    System.out.println(arg + " es " + RED + testResult + NC);
+                    break;
+                case "NotNumber":
+                    System.out.println(arg + " es " + GREEN + testResult + NC);
+                    break;
+
+            }
+
+            if (testResult.equals("hit") && strLocations.contains(arg)) {
+                count++;
+                result = "passed";
+            } else if (testResult.equals("miss") && !strLocations.contains(arg)) {
+                result = "passed";
+            } else if (testResult.equals("kill") && strLocations.contains(arg) && ++count == locations.length) {
+                result = "passed";
+            } else {
+                result = "not passed";
+            }
+            System.out.println("El resultado es: " + result);
+        }
+    }
+
+    private static int[] getRndNumber(int max, int numbers) {
+        List todos = new ArrayList();
+        int[] guess = new int[numbers];
+        int tempIndex;
+        for (int i = 0; i < max; i++) {
+            todos.add(i, i + 1);
+        }
+        System.out.println("La lista es: " + todos.toString());
+        for (int j = 0; j < numbers; j++) {
+            tempIndex = (int) Math.floor(Math.random() * max);
+            System.out.println("El índice es: " + tempIndex);
+            guess[j] = (int) todos.get(tempIndex);
+            todos.remove(tempIndex);
+            System.out.println("La lista es: " + todos.toString());
+            max--;
+        }
+        return guess;
+    }
+}
