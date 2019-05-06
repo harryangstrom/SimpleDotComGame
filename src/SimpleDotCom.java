@@ -5,6 +5,7 @@ public class SimpleDotCom {
     //private int[] location;
     private ArrayList<Integer> location = new ArrayList<>();
     private int hits = 0;
+    private String name;
     private int value;
     private Integer cellToRemove;
 
@@ -36,6 +37,8 @@ public class SimpleDotCom {
             }
         }
     }
+
+
 
     void setLocationCells(ArrayList<Integer> location) {
         this.location = location;

@@ -1,0 +1,9 @@
+git init
+
+git add .
+git add .gitignore
+git commit
+
+git remote add origin https://github.com/harryangstrom/SimpleDotComGame.git
+git push -u origin master
+
