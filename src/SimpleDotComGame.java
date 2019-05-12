@@ -1,38 +1,65 @@
 import java.util.ArrayList;
 
+/**
+* Clase SimpelDotComGame 
+* Principal con main.
+*
+*/
 public class SimpleDotComGame {
-    public static void main(String[] args) {
-        // final int MAX = 5;
-        int numberOfGuesses = 0;
-        SimpleDotCom dot = new SimpleDotCom();
-        GameHelper helper = new GameHelper();
-        ArrayList<Integer> location = helper.getLocation49(4);
-        ArrayList<Integer> location1 = helper.getLocation49(4);
-        ArrayList<Integer> location2 = helper.getLocation49(4);
-/*        int startLocation = (int) Math.floor(Math.random() * MAX + 1);
-        ArrayList<Integer> location = new ArrayList<>();
-        location.add(startLocation);
-        location.add(startLocation + 1);
-        location.add(startLocation + 2);*/
-        //int[] cells = {startLocation, startLocation + 1, startLocation + 2};
-        System.out.println("Localización: " + location.toString());
-        //System.out.println("Localización: " + Arrays.toString(cells));
-        //dot.setLocationCells(cells);
-        dot.setLocationCells(location);
-        boolean isAlive = true;
+  
+  /**
+  * Main method inside the app. 
+  * @param args parameters for main.
+  *
+  */
+  public static void main(String[] args) {
+    int numberOfGuesses = 0;
+    ArrayList<SimpleDotCom> arrDotCom = new ArrayList<>();
 
-        while (isAlive) {
-            String guess = helper.getUserInput("Enter a number:");
-            String result = dot.checkYourself(guess);
-            System.out.println("you've got a " + result);
-            if (!result.equals("NotNumber")) {
-                numberOfGuesses++;
-            }
-            if (result.equals("kill")) {
-                isAlive = false;
-                System.out.println("You took " + numberOfGuesses + " guesses.");
-            }
+    arrDotCom.add(new SimpleDotCom("pacman.com"));
+    arrDotCom.add(new SimpleDotCom("galaxy.com"));
+    arrDotCom.add(new SimpleDotCom("mariobros.com"));
+
+    GameHelper helper = new GameHelper();
+
+    for (SimpleDotCom dotCom : arrDotCom) {
+      dotCom.setLocationCells(helper.getLocation49(3));
+      System.out.println("Localización de " + dotCom.getname() + " es: " 
+          + dotCom.getLocationCells());
+    }
+
+
+    //boolean isAlive = true;
+    SimpleDotCom tempDotCom = null;
+
+    while (!arrDotCom.isEmpty()) {
+      String guess = helper.getUserInput("Enter a number:");
+      if (!guess.equals("NotNumber")) {
+        numberOfGuesses++;
+      } else {
+        continue;
+      }
+      
+      //boolean isAlive = true;
+      for (SimpleDotCom dotCom : arrDotCom) {
+        String result = dotCom.checkYourself(guess);
+        System.out.println("you've got a " + dotCom.getname() + ": " + result);
+
+        if (result.equals("kill")) {
+          tempDotCom = dotCom;
+          System.out.println("You took " + numberOfGuesses + " guesses.");
         }
+      }
+      if (tempDotCom != null) {
+        arrDotCom.remove(tempDotCom);
+        tempDotCom = null;
+        System.out.println("DotComs: " + arrDotCom.toString());
+      }
+
 
     }
+
+    System.out.println("You took in total " + numberOfGuesses + " guesses.");
+
+  }
 }
